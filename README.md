@@ -17,12 +17,14 @@ readable, versioned, and testable outside of Studio.
 - **`reference/js-nodes/`** — the exact JavaScript bodies pasted into each ODC
   JavaScript node (`Speak`, `StopSpeaking`, `OpenInstall`,
   `GetSupportedLanguages`, `GetSupportedVoices`, `IsLanguageSupported`, and the
-  Block's `OnReady`/`OnDestroy`). These are the single source of truth — the
-  same files run on-device and under the test suite.
+  Block's `OnReady`/`OnDestroy`). These are the single source of truth: the
+  same code pasted into the JavaScript nodes in Studio and run under the test
+  suite.
 - **`tests/`** — a Vitest + fast-check suite that runs the files above exactly
   as ODC would (same `$parameters`/`$resolve`/`$actions` calling convention),
   against a mock of the native plugin that reproduces its real iOS quirks
-  (e.g. a cancelled `speak()` call resolves rather than rejects).
+  (e.g. a cancelled `speak()` call resolves rather than rejects). Eight of the
+  30 tests only check that these files match design.md and the build sheet.
 - **`docs/design.md`** — the design: architecture, the Block-vs-Logic-tab
   split, every JS node with its contract, and the correctness properties the
   tests check.
@@ -66,9 +68,8 @@ Public actions live on the Logic tab rather than inside the Block.
 
 ## Links
 
-- [Forge: CapacitorTextToSpeech]
-- [Forge: TextToSpeechDemo]
-- [Article on Medium]
+- [Capacitor Text To Speech (ODC) on the Forge](https://www.outsystems.com/forge/component-overview/25846/capacitor-text-to-speech-odc)
+- [Text To Speech Demo (ODC) on the Forge](https://www.outsystems.com/forge/component-overview/25847/text-to-speech-demo-odc)
 
 ## Why ODC Mobile Library content can't just be "installed" from this repo
 
@@ -84,7 +85,15 @@ See `docs/studio-build-sheet.md` for the exact steps, and `docs/design.md` for
 the reasoning behind the architecture (in particular, why the Public actions
 and the event-raising Block are split the way they are).
 
-## Running the tests
+## Testing
+
+These tests run the JavaScript in reference/js-nodes/ against a mock of the
+native plugin. They do not test the library inside ODC. The library and the
+demo app were built by hand in ODC Studio, with each JavaScript body pasted
+from the build sheet, and then checked on a physical iPhone (all seven
+on-device scenarios in docs/design.md passed). Nothing automatically checks
+that the nodes in Studio still match these files, so if you change a file
+here, update the node in Studio too.
 
 ```bash
 npm install
