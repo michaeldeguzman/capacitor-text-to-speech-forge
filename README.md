@@ -3,9 +3,9 @@
 Reference source for the **CapacitorTextToSpeech** OutSystems Developer Cloud
 (ODC) Mobile Library: a wrapper around
 [`@capacitor-community/text-to-speech@3.0.0`](https://github.com/capacitor-community/text-to-speech)
-pinned exactly, plus the Studio build instructions and the test suite that
-validates it. This repo accompanies the Forge submission and article for this
-component.
+pinned exactly, plus the Studio build instructions and the test suite for the
+reference JavaScript. This repo accompanies the Forge submission and article
+for this component.
 
 It is **not** an installable OutSystems package by itself. ODC mobile
 libraries and apps are built in ODC Studio, not from source files. This repo
@@ -35,16 +35,16 @@ readable, versioned, and testable outside of Studio.
   your own when you create the assets in your tenant.
 - **`docs/tasks.md`**: the implementation plan the build followed, kept for
   context on *why* things are structured the way they are.
-- **`docs/run-log.md`**: the real, timestamped build log, the dead ends hit
+- **`docs/run-log.md`**: the real, timestamped build log: the dead ends hit
   along the way (e.g. the OutSystems MCP/Mentor tooling cannot create or load
-  a Mobile Library or Mobile app, that build step has to happen by hand in
+  a Mobile Library or Mobile app, so that build step has to happen by hand in
   ODC Studio), the bugs found and fixed before and during on-device testing,
   and the on-device validation results. Kept so other builders can see what
   actually went wrong and why the design ended up the way it did, not just the
   polished result. Any OutSystems tenant-specific asset key, portfolio key, or
   Mentor session/run ID has been redacted (replaced with `<REDACTED...>`
-  placeholders), those identify the original author's private tenant and
-  aren't needed to follow the log.
+  placeholders). Those identify the original author's private tenant and are
+  not needed to follow the log.
 
 ## Steering files
 
@@ -113,7 +113,7 @@ build is not included.
   is iOS's *maximum* speed).
 - `Pitch` is clamped to `0.5`–`2.0` (default `1.0`).
 - `Volume` is clamped to `0.0`–`1.0`, and is only a multiplier on the device's
-  **current system/media volume**, it cannot exceed or override the user's
+  **current system/media volume**. It cannot exceed or override the user's
   physical volume setting.
 - A cancelled `speak()` call **resolves** on iOS; it does not reject. The
   queue/drain logic in `Speak.js` accounts for this.
@@ -122,7 +122,5 @@ build is not included.
 
 ## License
 
-Add a `LICENSE` file appropriate for your Forge submission before publishing.
-This repo wraps `@capacitor-community/text-to-speech`, which has its own
-license, check it's compatible with how you intend to distribute this
-component.
+MIT. See LICENSE. This repo wraps `@capacitor-community/text-to-speech`,
+which has its own license.
