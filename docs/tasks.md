@@ -53,13 +53,13 @@ Wait for each publish to finish before the next dependent step. Never overlap pu
   - _Requirements: 2.1, 2.2, 2.3_
 
 - [x] 4. Define the Block events (Studio)
-  - `OnSpeakStart` (no parameters), `OnSpeakEnd` with `Success` (Boolean), `OnError` with `Message` (Text). All **Is Mandatory = No**.
+  - `OnSpeakerStart` (no parameters), `OnSpeakerEnd` with `Success` (Boolean), `OnError` with `Message` (Text). All **Is Mandatory = No**.
   - _Requirements: 3.1, 3.3, 3.6_
 
 - [x] 5. Create the Block helper client actions (Studio)
   - Client actions of the Block (not Public), each only a Trigger Event.
-  - [x] 5.1 `TriggerOnSpeakStart`: no inputs, Trigger Event `OnSpeakStart`. _Requirements: 4.1, 4.4_
-  - [x] 5.2 `TriggerOnSpeakEnd`: input `Success` (Boolean), Trigger Event `OnSpeakEnd` mapping `Success`. _Requirements: 4.2, 4.4_
+  - [x] 5.1 `TriggerOnSpeakStart`: no inputs, Trigger Event `OnSpeakerStart`. _Requirements: 4.1, 4.4_
+  - [x] 5.2 `TriggerOnSpeakEnd`: input `Success` (Boolean), Trigger Event `OnSpeakerEnd` mapping `Success`. _Requirements: 4.2, 4.4_
   - [x] 5.3 `TriggerOnError`: input `Message` (Text), Trigger Event `OnError` mapping `Message`. _Requirements: 4.3, 4.4_
 
 - [x] 6. Save the JS-node source as local reference files
@@ -132,7 +132,7 @@ Wait for each publish to finish before the next dependent step. Never overlap pu
   - In Studio, add the `CapacitorTextToSpeech` dependency: the six Public actions, `TTSVoice`, and `TextToSpeechController`. Place one Block on the test screen.
   - Screen variables `TTSInput` (Text) and `TTSLog` (Text, `""`), with widgets displaying each.
   - Buttons: **Speak** (`QueueMode = 1`, `VoiceIndex = SelectedVoiceIndex`), **Flush** (`QueueMode = 0`, `VoiceIndex = SelectedVoiceIndex`), **Stop** (`StopSpeaking`), **Voices** (`GetSupportedVoices` bound to a list; selecting an item assigns `SelectedVoiceIndex`). `VoiceIndex` must actually be wired to `SelectedVoiceIndex` on the Speak/Flush buttons, not left at default, or voice selection has no effect.
-  - Event handlers: `OnSpeakStart` appends `"Speaking started"`; `OnSpeakEnd` appends `"Speaking ended, success=" + Success`; `OnError` appends `"ERROR: " + Message` and shows an Error Feedback Message.
+  - Event handlers: `OnSpeakerStart` appends `"Speaking started"`; `OnSpeakerEnd` appends `"Speaking ended, success=" + Success`; `OnError` appends `"ERROR: " + Message` and shows an Error Feedback Message.
   - Start speech only from button taps, not from the screen's On Ready.
   - Add a second screen with its own `TextToSpeechController` Block instance, a Speak button, its own `TTSLog` display, and the same three event handlers, with navigation to and from the test screen, so on-device scenario 7 (events surviving navigation) has somewhere to navigate to and somewhere to show the result.
   - _Requirements: 13.0 to 13.10_

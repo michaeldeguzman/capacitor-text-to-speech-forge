@@ -2,7 +2,7 @@
 
 ## Introduction
 
-CapacitorTextToSpeech is an OutSystems Developer Cloud (ODC) **Mobile Library** that wraps the Capacitor community Text-to-Speech plugin (`@capacitor-community/text-to-speech@3.0.0`, pinned exactly). It exposes six **Public client actions on the Logic tab** (`Speak`, `StopSpeaking`, `OpenInstall`, `GetSupportedLanguages`, `GetSupportedVoices`, `IsLanguageSupported`) and a **Public Block** named `TextToSpeechController` that raises the speech lifecycle events (`OnSpeakStart`, `OnSpeakEnd`, `OnError`) to the consuming screen.
+CapacitorTextToSpeech is an OutSystems Developer Cloud (ODC) **Mobile Library** that wraps the Capacitor community Text-to-Speech plugin (`@capacitor-community/text-to-speech@3.0.0`, pinned exactly). It exposes six **Public client actions on the Logic tab** (`Speak`, `StopSpeaking`, `OpenInstall`, `GetSupportedLanguages`, `GetSupportedVoices`, `IsLanguageSupported`) and a **Public Block** named `TextToSpeechController` that raises the speech lifecycle events (`OnSpeakerStart`, `OnSpeakerEnd`, `OnError`) to the consuming screen.
 
 ODC platform rules shape this design (see `.kiro/steering/odc-mobile-rules.md`):
 
@@ -20,7 +20,7 @@ Version 3.0.0 is pinned deliberately: it has no `queueStrategy` option, no `onRa
 ## Glossary
 
 - **CapacitorTextToSpeech**: The ODC Mobile Library being built.
-- **TextToSpeechController**: The Public Block that listens for the library's window events and triggers `OnSpeakStart`, `OnSpeakEnd`, and `OnError`. It has no Public client actions and no Input Parameters. Its only local variable is the internal `HandlerId`.
+- **TextToSpeechController**: The Public Block that listens for the library's window events and triggers `OnSpeakerStart`, `OnSpeakerEnd`, and `OnError`. It has no Public client actions and no Input Parameters. Its only local variable is the internal `HandlerId`.
 - **Public_Actions**: The six Public client actions on the Logic tab.
 - **TTS_Plugin**: `@capacitor-community/text-to-speech@3.0.0`, read in JavaScript as `window.CapacitorPlugins ? window.CapacitorPlugins.TextToSpeech : null`.
 - **TTS_Queue**: The in-memory array `window._ttsQueue` of pending speak items.
@@ -67,11 +67,11 @@ Version 3.0.0 is pinned deliberately: it has no `queueStrategy` option, no `onRa
 
 #### Acceptance Criteria
 
-1. THE Block SHALL define an event `OnSpeakStart` with zero Input Parameters and **Is Mandatory = No**.
-2. WHEN the Drain_Loop begins speaking an item, THE library SHALL dispatch `ctts:speakstart`, and THE Block SHALL trigger `OnSpeakStart`.
-3. THE Block SHALL define an event `OnSpeakEnd` with one Input Parameter `Success` (Boolean) and **Is Mandatory = No**.
-4. WHEN an item finishes speaking to completion, THE library SHALL dispatch `ctts:speakend` with `success = true`, and THE Block SHALL trigger `OnSpeakEnd` with `Success = True`.
-5. WHEN an item is stopped or flushed before completion, or fails, THE library SHALL dispatch `ctts:speakend` with `success = false`, and THE Block SHALL trigger `OnSpeakEnd` with `Success = False`.
+1. THE Block SHALL define an event `OnSpeakerStart` with zero Input Parameters and **Is Mandatory = No**.
+2. WHEN the Drain_Loop begins speaking an item, THE library SHALL dispatch `ctts:speakstart`, and THE Block SHALL trigger `OnSpeakerStart`.
+3. THE Block SHALL define an event `OnSpeakerEnd` with one Input Parameter `Success` (Boolean) and **Is Mandatory = No**.
+4. WHEN an item finishes speaking to completion, THE library SHALL dispatch `ctts:speakend` with `success = true`, and THE Block SHALL trigger `OnSpeakerEnd` with `Success = True`.
+5. WHEN an item is stopped or flushed before completion, or fails, THE library SHALL dispatch `ctts:speakend` with `success = false`, and THE Block SHALL trigger `OnSpeakerEnd` with `Success = False`.
 6. THE Block SHALL define an event `OnError` with one Input Parameter `Message` (Text) and **Is Mandatory = No**.
 7. IF a speech operation fails, THEN THE library SHALL dispatch `ctts:error` with the failure description, and THE Block SHALL trigger `OnError` with that `Message`.
 
@@ -81,8 +81,8 @@ Version 3.0.0 is pinned deliberately: it has no `queueStrategy` option, no `onRa
 
 #### Acceptance Criteria
 
-1. THE Block SHALL provide client action `TriggerOnSpeakStart` (no inputs) that triggers `OnSpeakStart`.
-2. THE Block SHALL provide client action `TriggerOnSpeakEnd` with Input Parameter `Success` (Boolean) that triggers `OnSpeakEnd` with `Success` mapped.
+1. THE Block SHALL provide client action `TriggerOnSpeakStart` (no inputs) that triggers `OnSpeakerStart`.
+2. THE Block SHALL provide client action `TriggerOnSpeakEnd` with Input Parameter `Success` (Boolean) that triggers `OnSpeakerEnd` with `Success` mapped.
 3. THE Block SHALL provide client action `TriggerOnError` with Input Parameter `Message` (Text) that triggers `OnError` with `Message` mapped.
 4. THE helper actions SHALL contain only the Trigger Event, with no other logic.
 
@@ -204,13 +204,13 @@ Version 3.0.0 is pinned deliberately: it has no `queueStrategy` option, no `onRa
 1. THE app SHALL add the CapacitorTextToSpeech dependency (the six Public actions, `TTSVoice`, and the `TextToSpeechController` Block) and place one Block on the test screen.
 2. THE screen SHALL define Text variables `TTSInput` and `TTSLog` (default `""`), and SHALL display `TTSLog` on screen (e.g. an Expression or multi-line Text widget bound to it), so the running event log is visible while testing.
 3. A button SHALL call `Speak` with `Text = TTSInput`, other inputs at defaults, `QueueMode = 1`.
-4. ON `OnSpeakStart`, THE screen SHALL append `"Speaking started"` to `TTSLog`.
-5. ON `OnSpeakEnd`, THE screen SHALL append `"Speaking ended, success=" + Success`.
+4. ON `OnSpeakerStart`, THE screen SHALL append `"Speaking started"` to `TTSLog`.
+5. ON `OnSpeakerEnd`, THE screen SHALL append `"Speaking ended, success=" + Success`.
 6. ON `OnError`, THE screen SHALL append `"ERROR: " + Message`.
 7. ON `OnError`, THE screen SHALL show an Error Feedback Message.
 8. A second button SHALL call `GetSupportedVoices` and bind the result to a list from which a `VoiceIndex` can be picked, and the picked value SHALL be passed into the `Speak` and Flush buttons' `VoiceIndex` input so scenario 5 in Requirement 15 is actually exercised, not left at its default.
 9. THE screen SHALL provide buttons to call `StopSpeaking` and `Speak` with `QueueMode = 0`, so scenarios 3 and 4 in Requirement 15 can be run.
-10. THE app SHALL include a second screen with its own `TextToSpeechController` Block instance, its own way to Speak, and its own `TTSLog`-equivalent display handling that Block's `OnSpeakStart`/`OnSpeakEnd`/`OnError`, reachable by navigating from the test screen and back, so scenario 7 in Requirement 15 (events surviving navigation) has something to navigate to and somewhere to show the result.
+10. THE app SHALL include a second screen with its own `TextToSpeechController` Block instance, its own way to Speak, and its own `TTSLog`-equivalent display handling that Block's `OnSpeakerStart`/`OnSpeakerEnd`/`OnError`, reachable by navigating from the test screen and back, so scenario 7 in Requirement 15 (events surviving navigation) has something to navigate to and somewhere to show the result.
 
 ### Requirement 14: Publishing and Mobile Package Build
 
@@ -229,11 +229,11 @@ Version 3.0.0 is pinned deliberately: it has no `queueStrategy` option, no `onRa
 
 #### Acceptance Criteria
 
-1. `Speak` with non-empty `Text` SHALL fire `OnSpeakStart`, play audio, then fire `OnSpeakEnd(True)`.
-2. Two quick `Speak` calls with `QueueMode = 1` SHALL play in order without overlap, with one `OnSpeakEnd(True)` per phrase.
-3. `Speak` with `QueueMode = 0` during playback SHALL cut off the current phrase (its `OnSpeakEnd(False)`), discard pending phrases, and play the new phrase.
-4. `StopSpeaking` during playback SHALL stop audio and fire exactly one `OnSpeakEnd(False)`, with no queued phrases played afterward.
+1. `Speak` with non-empty `Text` SHALL fire `OnSpeakerStart`, play audio, then fire `OnSpeakerEnd(True)`.
+2. Two quick `Speak` calls with `QueueMode = 1` SHALL play in order without overlap, with one `OnSpeakerEnd(True)` per phrase.
+3. `Speak` with `QueueMode = 0` during playback SHALL cut off the current phrase (its `OnSpeakerEnd(False)`), discard pending phrases, and play the new phrase.
+4. `StopSpeaking` during playback SHALL stop audio and fire exactly one `OnSpeakerEnd(False)`, with no queued phrases played afterward.
 5. A non-default `VoiceIndex` from `GetSupportedVoices` SHALL audibly change the voice.
-6. `Speak` with empty `Text` SHALL fire `OnError("Text is required.")`. `Speak` with an unsupported `Lang` SHALL fire `OnError` with the plugin's message, then `OnSpeakEnd(False)`.
+6. `Speak` with empty `Text` SHALL fire `OnError("Text is required.")`. `Speak` with an unsupported `Lang` SHALL fire `OnError` with the plugin's message, then `OnSpeakerEnd(False)`.
 7. The Block events SHALL reach the screen although the Public action had already resolved, and SHALL keep working after navigating to another screen with the Block and back.
 8. Testing SHALL be done with the iPhone's silent switch off, or with `Category = "playback"`, because the default `ambient` category is muted by the silent switch.

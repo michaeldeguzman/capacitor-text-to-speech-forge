@@ -11,7 +11,7 @@ Layout of the CapacitorTextToSpeech Mobile Library, following
   built in ODC Studio.
 - One Public Block per plugin surface (TextToSpeechController). The Block holds
   only:
-  - Events (OnSpeakStart, OnSpeakEnd(Success), OnError(Message)), Is Mandatory = No.
+  - Events (OnSpeakerStart, OnSpeakerEnd(Success), OnError(Message)), Is Mandatory = No.
   - Thin "Trigger" helper client actions that only Trigger Event.
   - One internal Text variable `HandlerId`.
   - On Ready JS that registers this instance's `window` listeners (keyed by

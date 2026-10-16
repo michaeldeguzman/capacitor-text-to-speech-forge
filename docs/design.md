@@ -52,7 +52,7 @@ flowchart TD
         subgraph Block["TextToSpeechController Block (Public)"]
             OnReady["On Ready JS<br/>registers this instance's listeners<br/>-> HandlerId"]
             Helpers["Block client actions<br/>TriggerOnSpeakStart<br/>TriggerOnSpeakEnd(Success)<br/>TriggerOnError(Message)"]
-            Events["Events<br/>OnSpeakStart ()<br/>OnSpeakEnd (Success)<br/>OnError (Message)"]
+            Events["Events<br/>OnSpeakerStart ()<br/>OnSpeakerEnd (Success)<br/>OnError (Message)"]
             OnDestroy["On Destroy JS<br/>removes this instance's listeners,<br/>stops speech"]
         end
     end
@@ -128,16 +128,16 @@ No Input Parameters. One local variable: `HandlerId` (Text, default `""`).
 
 | Event | Input Parameters |
 |---|---|
-| `OnSpeakStart` | none |
-| `OnSpeakEnd` | `Success` (Boolean) |
+| `OnSpeakerStart` | none |
+| `OnSpeakerEnd` | `Success` (Boolean) |
 | `OnError` | `Message` (Text) |
 
 **Helper client actions** (inside the Block, each only a Trigger Event):
 
 | Client Action | Input Parameters | Flow |
 |---|---|---|
-| `TriggerOnSpeakStart` | none | Trigger Event `OnSpeakStart` |
-| `TriggerOnSpeakEnd` | `Success` (Boolean) | Trigger Event `OnSpeakEnd`, map `Success` |
+| `TriggerOnSpeakStart` | none | Trigger Event `OnSpeakerStart` |
+| `TriggerOnSpeakEnd` | `Success` (Boolean) | Trigger Event `OnSpeakerEnd`, map `Success` |
 | `TriggerOnError` | `Message` (Text) | Trigger Event `OnError`, map `Message` |
 
 **On Ready**: JavaScript node (Text output `HandlerId`), then Assign `HandlerId = JavaScript1.HandlerId`.
@@ -556,12 +556,12 @@ Known limit: if the native layer never settles a `speak()` call, the loop waits 
 
 Silent switch off, or `Category = "playback"`.
 
-1. **Single speak**: `OnSpeakStart`, audio, `OnSpeakEnd(True)`.
-2. **Sequential Add**: two quick `Speak` calls play in order, one `OnSpeakEnd(True)` each.
-3. **Flush mid-utterance**: current phrase cut off with `OnSpeakEnd(False)`, new phrase plays and ends `True`.
-4. **Stop mid-utterance**: audio stops, exactly one `OnSpeakEnd(False)`, nothing else plays. A later `Speak` still works.
+1. **Single speak**: `OnSpeakerStart`, audio, `OnSpeakerEnd(True)`.
+2. **Sequential Add**: two quick `Speak` calls play in order, one `OnSpeakerEnd(True)` each.
+3. **Flush mid-utterance**: current phrase cut off with `OnSpeakerEnd(False)`, new phrase plays and ends `True`.
+4. **Stop mid-utterance**: audio stops, exactly one `OnSpeakerEnd(False)`, nothing else plays. A later `Speak` still works.
 5. **Voice selection**: a non-default `VoiceIndex` changes the voice.
-6. **Errors**: empty `Text` gives `OnError("Text is required.")`. `Lang = "xx-XX"` gives `OnError("This language is not supported.")` then `OnSpeakEnd(False)`.
+6. **Errors**: empty `Text` gives `OnError("Text is required.")`. `Lang = "xx-XX"` gives `OnError("This language is not supported.")` then `OnSpeakerEnd(False)`.
 7. **Event bridge and navigation**: events arrive after the action resolved, and still arrive after navigating to another screen with the Block and back.
 
 ### TextToSpeechDemo test-screen wiring
@@ -573,7 +573,7 @@ Silent switch off, or `Category = "playback"`.
 4. **Flush** button: `Speak(Text = TTSInput, QueueMode = 0)`.
 5. **Stop** button: `StopSpeaking`.
 6. **Voices** button: `GetSupportedVoices`, bound to a list from which a `VoiceIndex` can be picked and passed to `Speak`.
-7. `OnSpeakStart` appends `"Speaking started"`, `OnSpeakEnd` appends `"Speaking ended, success=" + Success`, `OnError` appends `"ERROR: " + Message` and shows an Error Feedback Message.
+7. `OnSpeakerStart` appends `"Speaking started"`, `OnSpeakerEnd` appends `"Speaking ended, success=" + Success`, `OnError` appends `"ERROR: " + Message` and shows an Error Feedback Message.
 
 ## Publishing and Build
 

@@ -24,7 +24,7 @@ Steps map to spec tasks by number (Step 1 is task 1, and so on). Step 6 is local
 | `TTSVoice` structure | Data tab | **Yes** |
 | `TextToSpeechController` Block | Interface tab | **Yes** |
 | `HandlerId` variable | Inside the Block | n/a |
-| `OnSpeakStart`, `OnSpeakEnd`, `OnError` events | Inside the Block | Is Mandatory = No |
+| `OnSpeakerStart`, `OnSpeakerEnd`, `OnError` events | Inside the Block | Is Mandatory = No |
 | `TriggerOnSpeakStart/End/Error` | Client actions inside the Block | n/a (Block actions can't be Public) |
 | Block On Ready, On Destroy | Inside the Block | n/a |
 | `Speak`, `StopSpeaking`, `OpenInstall` | Logic tab client actions | **Yes** |
@@ -116,8 +116,8 @@ Public action).
 
 | Event          | Input Parameters    | Is Mandatory |
 |----------------|---------------------|--------------|
-| `OnSpeakStart` | (none)              | No           |
-| `OnSpeakEnd`   | `Success` (Boolean) | No           |
+| `OnSpeakerStart` | (none)              | No           |
+| `OnSpeakerEnd`   | `Success` (Boolean) | No           |
 | `OnError`      | `Message` (Text)    | No           |
 
 ---
@@ -126,8 +126,8 @@ Public action).
 
 Client actions **of the Block**. No JavaScript, one node each.
 
-- **5.1 `TriggerOnSpeakStart`** (no inputs): Trigger Event `OnSpeakStart`.
-- **5.2 `TriggerOnSpeakEnd`** (input `Success`, Boolean): Trigger Event `OnSpeakEnd`, `Success` = `Success`.
+- **5.1 `TriggerOnSpeakStart`** (no inputs): Trigger Event `OnSpeakerStart`.
+- **5.2 `TriggerOnSpeakEnd`** (input `Success`, Boolean): Trigger Event `OnSpeakerEnd`, `Success` = `Success`.
 - **5.3 `TriggerOnError`** (input `Message`, Text): Trigger Event `OnError`, `Message` = `Message`.
 
 ---
@@ -513,8 +513,8 @@ from the mobile library.
      `SelectedVoiceIndex = <selected item>.VoiceIndex` so the next Speak/Flush
      tap uses it.
 6. On the Block's events (handled on the screen, since the Block is on it):
-   - `OnSpeakStart` → append `"Speaking started"` to `TTSLog`.
-   - `OnSpeakEnd` → append `"Speaking ended, success=" + Success` to `TTSLog`.
+   - `OnSpeakerStart` → append `"Speaking started"` to `TTSLog`.
+   - `OnSpeakerEnd` → append `"Speaking ended, success=" + Success` to `TTSLog`.
    - `OnError` → append `"ERROR: " + Message` to `TTSLog` and show an Error
      Feedback Message.
 7. Do **not** call `Speak` from the screen's On Ready. The previous screen's On
@@ -525,7 +525,7 @@ from the mobile library.
    (`Speak(Text = "Second screen", QueueMode = 1)` is enough; it does not need
    the full set of controls), **and its own `TTSLog` Text variable with a
    display widget bound to it, with the same three event handlers as the test
-   screen** (`OnSpeakStart`/`OnSpeakEnd`/`OnError` appending to *this screen's*
+   screen** (`OnSpeakerStart`/`OnSpeakerEnd`/`OnError` appending to *this screen's*
    `TTSLog`). Without the handlers and a visible log here, scenario 7 looks like
    a failure (no visible events) even when the Block is correctly firing them —
    there is simply nothing on screen to show it. Add a navigation link from the
