@@ -1,0 +1,15 @@
+{
+  "name": "capacitor-text-to-speech-forge",
+  "version": "1.0.0",
+  "description": "Reference source and test suite for the CapacitorTextToSpeech ODC Mobile Library (Forge submission).",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "fast-check": "^3.23.1",
+    "vitest": "^2.1.8"
+  }
+}
