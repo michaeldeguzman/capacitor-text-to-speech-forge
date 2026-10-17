@@ -70,6 +70,7 @@ Public actions live on the Logic tab rather than inside the Block.
 
 - [Capacitor Text To Speech (ODC) on the Forge](https://www.outsystems.com/forge/component-overview/25846/capacitor-text-to-speech-odc)
 - [Text To Speech Demo (ODC) on the Forge](https://www.outsystems.com/forge/component-overview/25847/text-to-speech-demo-odc)
+- Article: [The Build That Passed Every Test and Did Nothing](https://medium.com/@michael.de.guzman/the-build-that-passed-every-test-and-did-nothing-0f08be76d9e8)
 
 ## Why ODC Mobile Library content can't just be "installed" from this repo
 
